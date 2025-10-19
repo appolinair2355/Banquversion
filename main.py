@@ -37,7 +37,7 @@ try:
     API_HASH = os.getenv('API_HASH') or ''
     BOT_TOKEN = os.getenv('BOT_TOKEN') or ''
     ADMIN_ID = int(os.getenv('ADMIN_ID') or '0')
-    PORT = int(os.getenv('PORT') or '10000')
+    PORT = int(os.getenv('PORT') or '5000')
 
     # Validation des variables requises
     if not API_ID or API_ID == 0:
@@ -908,11 +908,11 @@ async def generate_deploy_package(event):
         if event.sender_id != ADMIN_ID:
             return
 
-        await event.respond("🚀 **Génération Package ZIP42 - Render.com + Base YAML + Cooldown Corrigé...**")
+        await event.respond("🚀 **Génération Package joker239 - Render.com + Base YAML + Cooldown Corrigé...**")
 
         try:
-            # Créer le package ZIP avec nom zip42
-            package_name = 'zip42.zip'
+            # Créer le package ZIP avec nom joker239
+            package_name = 'joker239.zip'
 
             with zipfile.ZipFile(package_name, 'w', zipfile.ZIP_DEFLATED) as zipf:
                 # Fichiers principaux actuels avec toutes les améliorations N3
@@ -926,10 +926,11 @@ async def generate_deploy_package(event):
 
                 # Configuration .env.example pour Render.com
                 env_content = f"""# Configuration ZIP42 - Render.com Deployment + Cooldown Corrigé
-API_ID=29177661
-API_HASH=a8639172fa8d35dbfd8ea46286d349ab
-BOT_TOKEN=8134202948:AAFUtAk6Fi0h2fMGERkLzU4UW9GJxdEE_ME
-ADMIN_ID=1190237801
+# Obtenez ces identifiants sur https://my.telegram.org
+API_ID=your_api_id_here
+API_HASH=your_api_hash_here
+BOT_TOKEN=your_bot_token_from_botfather
+ADMIN_ID=your_telegram_user_id
 RENDER_DEPLOYMENT=true
 PORT=10000
 PREDICTION_INTERVAL={prediction_interval}
@@ -954,7 +955,7 @@ pyyaml==6.0.1"""
 ✅ **Système Cooldown**: Configurez l'intervalle entre vérifications avec /cooldown
 ✅ **Règles J Strictes**: UN SEUL J dans le deuxième groupe UNIQUEMENT
 ✅ **Vérification 3K**: Exactement 3 cartes dans le deuxième groupe
-✅ **Format 3K**: Messages "🔵XXX 🔵3K: statut :⏳"
+✅ **Format 3K**: Messages avec prédiction détaillée
 ✅ **Éditions Temps Réel**: Détection ⏰→🔰/✅ avec traitement différé
 ✅ **Architecture YAML**: Persistance complète sans PostgreSQL
 ✅ **Offsets 3**: Vérification ✅0️⃣, ✅1️⃣, ✅2️⃣, ✅3️⃣ ou ❌
@@ -976,7 +977,9 @@ pyyaml==6.0.1"""
 - UN SEUL J dans le deuxième groupe
 - Message finalisé avec 🔰 ou ✅
 - Cooldown respecté entre vérifications
-- Exemple: (A♠️2♥️) - (6♥️J♠️) → 🔵X 🔵3K: statut :⏳
+- Exemple: (A♠️2♥️) - (6♥️J♠️) → 🔵523 🔵3K: statut :⏳
+  Банкир получит 3 карты
+  ▪️ Повтор 3 игр (🔰+3)
 
 ### ❌ Pas de prédiction si:
 - J dans le premier groupe: (J♠️2♥️) - (6♥️8♠️)
@@ -1041,11 +1044,11 @@ run = ["python", "main.py"]"""
             file_size = os.path.getsize(package_name) / 1024
 
             # Envoyer le message de confirmation
-            await event.respond(f"""✅ **Package ZIP42 Généré avec Succès!**
+            await event.respond(f"""✅ **Package joker239 Généré avec Succès!**
 
 📦 **Fichier**: `{package_name}` ({file_size:.1f} KB)
 
-🎯 **Fonctionnalités ZIP42**:
+🎯 **Fonctionnalités**:
 • Système de cooldown configurable (0s-20min) 
 • Optimisé pour Render.com
 • Architecture YAML complète (sans PostgreSQL)
@@ -1060,16 +1063,16 @@ run = ["python", "main.py"]"""
 • Base YAML (dossier data/)
 • Health check intégré
 
-**Package ZIP42 - Déploiement Render.com simplifié + Cooldown Corrigé!**""")
+**Package joker239 - Déploiement Render.com simplifié + Cooldown Corrigé!**""")
 
             # Envoyer le fichier ZIP en pièce jointe
             await client.send_file(
                 event.chat_id,
                 package_name,
-                caption="📦 **Package ZIP42 - Render.com Ready** - Base YAML + Port 10000 + Cooldown Corrigé"
+                caption="📦 **Package joker239 - Render.com Ready** - Base YAML + Port 10000 + Cooldown Corrigé"
             )
 
-            print(f"✅ Package ZIP42 généré: {package_name} ({file_size:.1f} KB)")
+            print(f"✅ Package joker239 généré: {package_name} ({file_size:.1f} KB)")
             print(f"📋 Fichiers inclus: {len(files_to_include)} fichiers principaux + config")
             print(f"🚀 Optimisé pour Render.com avec base YAML")
 
@@ -1136,7 +1139,7 @@ async def handle_messages(event):
         if predicted and not cooldown_active:
             logger.info(f"🎯 ÉDITION FINALE DÉTECTÉE - Génération prédiction #{predicted_game}")
             # Message de prédiction selon le nouveau format
-            prediction_text = f"🔵{predicted_game} 🔵3K: statut :⏳"
+            prediction_text = f"🔵{predicted_game} 🔵3K: statut :⏳\nБанкир получит 3 карты\n▪️ Повтор 3 игр (🔰+3)"
 
             sent_messages = await broadcast(prediction_text)
 
@@ -1156,7 +1159,7 @@ async def handle_messages(event):
             if predicted and not cooldown_active:
                 logger.info(f"🚀 RÈGLE DÉTECTÉE - Génération prédiction #{predicted_game}")
                 # Message de prédiction manuelle selon le nouveau format demandé
-                prediction_text = f"🔵{predicted_game} 🔵3K: statut :⏳"
+                prediction_text = f"🔵{predicted_game} 🔵3K: statut :⏳\nБанкир получит 3 карты\n▪️ Повтор 3 игр (🔰+3)"
 
                 sent_messages = await broadcast(prediction_text)
 

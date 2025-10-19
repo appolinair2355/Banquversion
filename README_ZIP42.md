@@ -4,7 +4,7 @@
 ✅ **Système Cooldown**: Configurez l'intervalle entre vérifications avec /cooldown
 ✅ **Règles J Strictes**: UN SEUL J dans le deuxième groupe UNIQUEMENT
 ✅ **Vérification 3K**: Exactement 3 cartes dans le deuxième groupe
-✅ **Format 3K**: Messages "🔵XXX 🔵3K: statut :⏳"
+✅ **Format 3K**: Messages avec prédiction détaillée
 ✅ **Éditions Temps Réel**: Détection ⏰→🔰/✅ avec traitement différé
 ✅ **Architecture YAML**: Persistance complète sans PostgreSQL
 ✅ **Offsets 3**: Vérification ✅0️⃣, ✅1️⃣, ✅2️⃣, ✅3️⃣ ou ❌
@@ -26,7 +26,9 @@
 - UN SEUL J dans le deuxième groupe
 - Message finalisé avec 🔰 ou ✅
 - Cooldown respecté entre vérifications
-- Exemple: (A♠️2♥️) - (6♥️J♠️) → 🔵X 🔵3K: statut :⏳
+- Exemple: (A♠️2♥️) - (6♥️J♠️) → 🔵523 🔵3K: statut :⏳
+  Банкир получит 3 карты
+  ▪️ Повтор 3 игр (🔰+3)
 
 ### ❌ Pas de prédiction si:
 - J dans le premier groupe: (J♠️2♥️) - (6♥️8♠️)
