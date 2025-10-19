@@ -291,6 +291,17 @@ async def set_stat_channel(event):
 
         await event.respond(f"✅ **Canal de statistiques configuré**\n📋 {chat_title}\n\n✨ Le bot surveillera ce canal pour les prédictions - développé par Sossou Kouamé Appolinaire\n💾 Configuration sauvegardée automatiquement")
         print(f"Canal de statistiques configuré: {channel_id}")
+        
+        # Démarrer le scheduler si les deux canaux sont maintenant configurés
+        global scheduler
+        if detected_stat_channel and detected_display_channel and not scheduler:
+            scheduler = PredictionScheduler(
+                client, predictor,
+                detected_stat_channel, detected_display_channel
+            )
+            asyncio.create_task(scheduler.run_scheduler())
+            await event.respond("🤖 **Scheduler automatique démarré!**\n\n✅ Le bot génère maintenant des prédictions automatiques!")
+            logger.info("🤖 Planificateur automatique démarré après configuration des canaux")
 
     except Exception as e:
         print(f"Erreur dans set_stat_channel: {e}")
@@ -332,6 +343,17 @@ async def set_display_channel(event):
 
         await event.respond(f"✅ **Canal de diffusion configuré**\n📋 {chat_title}\n\n🚀 Le bot publiera les prédictions dans ce canal - développé par Sossou Kouamé Appolinaire\n💾 Configuration sauvegardée automatiquement")
         print(f"Canal de diffusion configuré: {channel_id}")
+        
+        # Démarrer le scheduler si les deux canaux sont maintenant configurés
+        global scheduler
+        if detected_stat_channel and detected_display_channel and not scheduler:
+            scheduler = PredictionScheduler(
+                client, predictor,
+                detected_stat_channel, detected_display_channel
+            )
+            asyncio.create_task(scheduler.run_scheduler())
+            await event.respond("🤖 **Scheduler automatique démarré!**\n\n✅ Le bot génère maintenant des prédictions automatiques!")
+            logger.info("🤖 Planificateur automatique démarré après configuration des canaux")
 
     except Exception as e:
         print(f"Erreur dans set_display_channel: {e}")
@@ -903,16 +925,16 @@ async def run_diagnostic(event):
 
 @client.on(events.NewMessage(pattern='/deploy'))
 async def generate_deploy_package(event):
-    """Génère le package de déploiement zip40 optimisé pour Render.com avec base YAML (admin uniquement)"""
+    """Génère le package de déploiement 6render optimisé pour Render.com avec base YAML (admin uniquement)"""
     try:
         if event.sender_id != ADMIN_ID:
             return
 
-        await event.respond("🚀 **Génération Package joker239 - Render.com + Base YAML + Cooldown Corrigé...**")
+        await event.respond("🚀 **Génération Package 6render - Render.com Port 10000 + Base YAML + Cooldown Corrigé...**")
 
         try:
-            # Créer le package ZIP avec nom joker239
-            package_name = 'joker239.zip'
+            # Créer le package ZIP avec nom 6render
+            package_name = '6render.zip'
 
             with zipfile.ZipFile(package_name, 'w', zipfile.ZIP_DEFLATED) as zipf:
                 # Fichiers principaux actuels avec toutes les améliorations N3
@@ -925,7 +947,7 @@ async def generate_deploy_package(event):
                         zipf.write(file_path)
 
                 # Configuration .env.example pour Render.com
-                env_content = f"""# Configuration ZIP42 - Render.com Deployment + Cooldown Corrigé
+                env_content = f"""# Configuration 6render - Render.com Deployment Port 10000
 # Obtenez ces identifiants sur https://my.telegram.org
 API_ID=your_api_id_here
 API_HASH=your_api_hash_here
@@ -948,10 +970,10 @@ pyyaml==6.0.1"""
                 runtime_content = "python-3.11.4"
                 zipf.writestr('runtime.txt', runtime_content)
 
-                # Documentation ZIP40 pour Render.com
-                readme_zip42 = f"""# Package Déploiement ZIP42 - Render.com + Cooldown Corrigé
+                # Documentation 6render pour Render.com
+                readme_6render = f"""# Package Déploiement 6render - Render.com Port 10000
 
-## 🚀 Fonctionnalités ZIP42:
+## 🚀 Fonctionnalités 6render:
 ✅ **Système Cooldown**: Configurez l'intervalle entre vérifications avec /cooldown
 ✅ **Règles J Strictes**: UN SEUL J dans le deuxième groupe UNIQUEMENT
 ✅ **Vérification 3K**: Exactement 3 cartes dans le deuxième groupe
@@ -994,7 +1016,7 @@ pyyaml==6.0.1"""
 - Mise à jour automatique du statut dans le message original
 - Gestion automatique des prédictions expirées
 
-## 🗄️ Architecture YAML ZIP42:
+## 🗄️ Architecture YAML 6render:
 - `data/bot_config.yaml`: Configuration persistante
 - `data/predictions.yaml`: Historique prédictions 
 - `data/auto_predictions.yaml`: Planification automatique
@@ -1002,35 +1024,35 @@ pyyaml==6.0.1"""
 - `bot_config.json`: Backup configuration
 
 ## 🌐 Déploiement Render.com:
-- Port: 10000 (obligatoire pour Render.com)
+- Port: 10000 (OBLIGATOIRE pour Render.com)
 - Start Command: `python main.py`
 - Build Command: `pip install -r requirements.txt`
-- Variables: Pré-configurées dans .env.example
+- Variables: Pré-configurées dans .env.example avec PORT=10000
 - Base YAML (sans PostgreSQL)
 
-## 📊 Système de Monitoring ZIP42:
+## 📊 Système de Monitoring 6render:
 - Health check: `http://0.0.0.0:10000/health`
 - Status API: `http://0.0.0.0:10000/status`
 - Logs détaillés avec timestamps
 - Surveillance cooldown en temps réel
 
-## 🎯 Configuration ZIP42:
+## 🎯 Configuration 6render:
 1. `/intervalle 3` - Prédictions après 3 minutes
 2. `/cooldown 30` - Attendre 30 secondes avant re-vérification
-3. Render.com: Port 10000 automatiquement configuré
-4. Variables d'environnement pré-remplies
+3. Render.com: Port 10000 pré-configuré
+4. Variables d'environnement avec PORT=10000
 5. Base YAML dans dossier `data/`
 
 ## 🚀 Déploiement Render.com:
-1. Téléchargez zip40.zip
+1. Téléchargez 6render.zip
 2. Décompressez sur votre machine
 3. Créez un nouveau service Web sur Render.com
 4. Uploadez les fichiers ou connectez votre repo
-5. Les variables sont déjà dans .env.example
+5. Les variables sont déjà dans .env.example (PORT=10000)
 6. Déployez directement !
 
-🚀 Package ZIP42 prêt pour Render.com!"""
-                zipf.writestr('README_ZIP42.md', readme_zip42)
+🚀 Package 6render prêt pour Render.com avec PORT 10000!"""
+                zipf.writestr('README_6RENDER.md', readme_6render)
 
                 # Fichier de configuration Replit
                 replit_config = """[deployments.replit]
@@ -1044,37 +1066,37 @@ run = ["python", "main.py"]"""
             file_size = os.path.getsize(package_name) / 1024
 
             # Envoyer le message de confirmation
-            await event.respond(f"""✅ **Package joker239 Généré avec Succès!**
+            await event.respond(f"""✅ **Package 6render Généré avec Succès!**
 
 📦 **Fichier**: `{package_name}` ({file_size:.1f} KB)
 
 🎯 **Fonctionnalités**:
 • Système de cooldown configurable (0s-20min) 
-• Optimisé pour Render.com
+• Optimisé pour Render.com avec PORT 10000
 • Architecture YAML complète (sans PostgreSQL)
-• Port 10000 pré-configuré
+• Port 10000 PRÉ-CONFIGURÉ dans .env.example
 • Variables d'environnement incluses
 • Règles J strictes: UN SEUL dans deuxième groupe
 • Vérification 3K: exactement 3 cartes
 
 🚀 **Prêt pour Render.com**:
-• Variables déjà configurées dans .env.example
-• Port 10000 optimisé
+• Variables avec PORT=10000 dans .env.example
+• Port 10000 optimisé pour Render.com
 • Base YAML (dossier data/)
-• Health check intégré
+• Health check sur port 10000
 
-**Package joker239 - Déploiement Render.com simplifié + Cooldown Corrigé!**""")
+**Package 6render - Déploiement Render.com avec PORT 10000!**""")
 
             # Envoyer le fichier ZIP en pièce jointe
             await client.send_file(
                 event.chat_id,
                 package_name,
-                caption="📦 **Package joker239 - Render.com Ready** - Base YAML + Port 10000 + Cooldown Corrigé"
+                caption="📦 **Package 6render - Render.com Ready PORT 10000** - Base YAML + Cooldown Corrigé"
             )
 
-            print(f"✅ Package joker239 généré: {package_name} ({file_size:.1f} KB)")
+            print(f"✅ Package 6render généré: {package_name} ({file_size:.1f} KB)")
             print(f"📋 Fichiers inclus: {len(files_to_include)} fichiers principaux + config")
-            print(f"🚀 Optimisé pour Render.com avec base YAML")
+            print(f"🚀 Optimisé pour Render.com avec PORT 10000")
 
         except Exception as e:
             await event.respond(f"❌ Erreur création: {str(e)}")
@@ -1187,7 +1209,7 @@ async def handle_messages(event):
                 logger.info(f"✅ MESSAGE MIS À JOUR #{number}: {statut}")
             else:
                 logger.warning(f"⚠️ Échec mise à jour message #{number}, envoi nouveau message")
-                status_text = f"🔵{number} 🔵3K: statut :{statut}"
+                status_text = f"🔵{number} 🔵3K: statut :{statut}\nБанкир получит 3 карты\n▪️ Повтор 3 игр (🔰+3)"
                 await broadcast(status_text)
 
         # Check for expired predictions on every valid result message
@@ -1201,7 +1223,7 @@ async def handle_messages(event):
                     print(f"✅ Message de prédiction expirée #{expired_num} mis à jour avec ❌")
                 else:
                     print(f"⚠️ Impossible de mettre à jour le message expiré #{expired_num}")
-                    status_text = f"🔵{expired_num} 🔵3K: statut :❌"
+                    status_text = f"🔵{expired_num} 🔵3K: statut :❌\nБанкир получит 3 карты\n▪️ Повтор 3 игр (🔰+3)"
                     await broadcast(status_text)
 
         # Vérification des prédictions automatiques du scheduler
@@ -1265,7 +1287,7 @@ async def edit_prediction_message(game_number: int, new_status: str):
         if message_info:
             chat_id = message_info['chat_id']
             message_id = message_info['message_id']
-            new_text = f"🔵{game_number} 🔵3K: statut :{new_status}"
+            new_text = f"🔵{game_number} 🔵3K: statut :{new_status}\nБанкир получит 3 карты\n▪️ Повтор 3 игр (🔰+3)"
 
             await client.edit_message(chat_id, message_id, new_text)
             print(f"Message de prédiction #{game_number} mis à jour avec statut: {new_status}")
